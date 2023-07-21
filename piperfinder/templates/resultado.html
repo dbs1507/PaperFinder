@@ -1,0 +1,146 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+    <title>Resultado</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;800&display=swap');
+
+        .title{
+            font-family: 'Syne', sans-serif;
+            margin-bottom: 40px;
+        }
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        .regiao {
+            font-weight: bold;
+        }
+
+
+        .pagination {
+            gap: 0.8rem;
+            font-family: 'Syne', sans-serif;
+
+            /* margin-left: 370px; */
+
+        }
+
+        .title-page{
+            font-family: 'Syne', sans-serif;
+            margin-bottom: 40px;
+        }
+        
+        .container {
+            width: 100vw;
+            min-height: 100vh;
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+            border-radius: 0.71rem;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            }
+        
+            .keyword{
+                text-align: center;
+            }
+            
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="text-center pt-4 title-page">PAPERFINDER</h1>
+        <div class="text-center mb-3">
+            <span class="badge text-bg-dark">KEYWORD: {{dado}}</span>
+        </div>
+    </header>
+    <div class="container">
+        <h4 class="title text-center pt-5" >Interesse ao longo do tempo</h4>
+        <canvas class="mt-5" id="chartTrends"></canvas>
+
+    </div>
+    <div class="mt-5 container">
+        <h4 class="title text-center pt-5">Artigos relacionados</h4>
+        {% for resultado in google_scholar %}
+            {% set sorted_results = resultado['organic_results'] | sort(attribute='inline_links.cited_by.total', reverse=True) %}
+            {% for item in sorted_results %}
+                <div class="col-12">
+                    <div class="card mt-2" style="width: 100%;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item['title'] }}</h5>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{ item['publication_info']['summary'] }}</h6>
+                            <p class="card-text"><span class="mt-2 badge text-bg-dark">{{ item['inline_links']['cited_by']['total'] }} citações</span></p>
+                            <button class="btn btn-outline-secondary"><a target="_blank" href="{{ item['link'] }}" style="color: rgb(143, 143, 143); text-decoration: none;">Link artigo</a></button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        <div class="pagination mt-5 mb-5 text-center">
+            {% for resultado in range(1, totalResults) %}
+                {% if resultado < 11 %}
+                    <a class="btn btn-dark mb-3" href="{{ url_for('buscar', dado=dado, page=resultado) }}">{{ resultado }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        
+    </div>
+    
+    
+
+
+    <script>
+        
+        //Trends
+        var interesseGeral = '{{ consultas_relacionadas | tojson}}';
+        interesseGeral = JSON.parse(interesseGeral);
+    
+        var consultasKeys = [];
+        var consultasValues = [];
+        interesseGeral.map(val => {
+            // Converter a data usando o Moment.js
+            var dataFormatada = moment(val[0]).format('DD/MM/YYYY');
+            consultasKeys.push(dataFormatada);
+            consultasValues.push(val[1]);
+        });
+    
+        const chartTrends = document.getElementById('chartTrends');
+    
+        // Criar um gráfico de linhas
+        new Chart(chartTrends, {
+            type: 'line',
+            data: {
+                labels: consultasKeys,
+                datasets: [{
+                    label: 'Interesse a todo tempo',
+                    data: consultasValues,
+                    backgroundColor: '#0d0d0d',
+                    borderColor: '#0d0d0d',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
+        });
+
+    </script>
+    
+    
+</body>
+</html>
