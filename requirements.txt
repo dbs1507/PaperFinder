@@ -6,7 +6,7 @@ sphinxcontrib-napoleon
 decorator
 six
 flask
-serpapi
+from serpapi import GoogleSearch
 pytrends
 
 
