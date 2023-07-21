@@ -6,7 +6,5 @@ sphinxcontrib-napoleon
 decorator
 six
 flask
-serpapi
-pytrends.request
 
 
