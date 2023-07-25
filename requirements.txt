@@ -5,6 +5,7 @@ pillow
 sphinxcontrib-napoleon
 decorator
 six
+Gunicorn
 flask
 google-search-results
 pytrends
