@@ -9,6 +9,7 @@
 
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;800&display=swap');
 
+        /* Estilos existentes */
         .title{
             font-family: 'Syne', sans-serif;
             margin-bottom: 40px;
@@ -26,35 +27,56 @@
             font-weight: bold;
         }
 
-
         .pagination {
             gap: 0.8rem;
             font-family: 'Syne', sans-serif;
-
-            /* margin-left: 370px; */
-
         }
 
         .title-page{
             font-family: 'Syne', sans-serif;
             margin-bottom: 40px;
         }
-        
-        .container {
-            width: 100vw;
-            min-height: 100vh;
-            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-            border-radius: 0.71rem;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            }
-        
-            .keyword{
-                text-align: center;
-            }
-            
 
+        .container {
+            width: 100%;
+            padding: 15px;
+        }
+
+        .keyword{
+            text-align: center;
+        }
+
+        /* Estilos responsivos para dispositivos móveis */
+        @media (max-width: 576px) {
+            .title{
+                font-size: 24px; /* Reduza o tamanho do título para telas menores */
+            }
+
+            .container {
+                padding: 10px; /* Reduza o espaçamento em telas menores */
+            }
+
+            /* Ajuste o tamanho do gráfico para telas menores */
+            #chartTrends {
+                width: 100%;
+                max-height: 300px; /* Defina a altura máxima desejada para o gráfico */
+            }
+
+            /* Ajuste o tamanho dos cards para telas menores */
+            .card {
+                width: 100%;
+                margin-bottom: 15px; /* Adicione um espaçamento entre os cartões em telas menores */
+                padding: 10px; /* Adicione um espaçamento interno para os cards */
+            }
+
+            .card-title {
+                font-size: 20px; /* Reduza o tamanho do título do card para telas menores */
+            }
+
+            .card-subtitle {
+                font-size: 14px; /* Reduza o tamanho do subtítulo do card para telas menores */
+            }
+        }
     </style>
 </head>
 <body>
