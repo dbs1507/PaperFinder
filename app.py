@@ -17,9 +17,14 @@ def index():
 def buscar():
     dado = request.args.get('dado')
     page = request.args.get('page', 1)
+
+    if not dado or dado.strip() == "":
+        alerta = "Pesquisa vazia, digite alguma palavra"
+        return render_template('index.html', alerta=alerta)
+
     consultas_relacionadas = trendsInterface.obter_dados_completos(dado)
     totalResults, paginationResponses = googleScholar.obter_dados_google(
-        dado, page)  # Adicionando a variável pagination
+        dado, page)
 
     consultas_relacionadas.drop("isPartial", axis=1, inplace=True or False)
     consultas_relacionadas = consultas_relacionadas.reset_index()

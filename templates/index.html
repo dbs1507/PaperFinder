@@ -93,8 +93,11 @@
     </style>
 </head>
 <body>
-    <header>
-    </header>
+    {% if alerta %}
+    <div id="alerta" class="alert alert-danger" role="alert">
+        {{ alerta }}
+    </div>
+    {% endif %}
     <div class="formulario justify-content-center" align="center">
         <div class="container text-center mt-4">
             <h1 class="title">PAPERFINDER</h1>
@@ -132,4 +135,11 @@
         $(function () {
             $('[data-bs-toggle="tooltip"]').tooltip();
         });
+
+        window.onload = function () {
+            var alertElement = document.getElementById('alerta');
+            if (alertElement) {
+                alertElement.style.display = 'none';
+            }
+        };
 </script>
