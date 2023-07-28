@@ -131,9 +131,9 @@
         var consultasValues = [];
         interesseGeral.map(val => {
             // Converter a data usando o Moment.js
-            var dataFormatada = moment(val[0]).format('DD/MM/YYYY');
+            var dataFormatada = moment(val[1]).format('DD/MM/YYYY');
             consultasKeys.push(dataFormatada);
-            consultasValues.push(val[1]);
+            consultasValues.push(val[2]);
         });
     
         const chartTrends = document.getElementById('chartTrends');

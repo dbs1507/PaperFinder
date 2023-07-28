@@ -26,7 +26,7 @@ def buscar():
     totalResults, paginationResponses = googleScholar.obter_dados_google(
         dado, page)
 
-    consultas_relacionadas.drop("isPartial", axis=1, inplace=True or False)
+    # consultas_relacionadas.drop("isPartial", axis=1, inplace=True or False)
     consultas_relacionadas = consultas_relacionadas.reset_index()
     consultas_relacionadas = consultas_relacionadas.values.tolist()
     print(totalResults)
