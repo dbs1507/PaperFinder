@@ -46,7 +46,7 @@ def obter_dados_completos(palavra_chave):
         "engine": "google_trends",
         "q": palavra_chave,
         "data_type": "TIMESERIES",
-        "api_key": "5468326dba3cae3868bc9c03594d2ac4c9d3ee3136c8f34d73704c1d1ac67d46",
+        "api_key": "b4c5a18f51d930ea231af077470aa2af1ce0aa31a6e23c94ebfa8f7132fdf193",
         "date": "today 12-m",
 
     }

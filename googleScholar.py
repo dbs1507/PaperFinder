@@ -7,7 +7,7 @@ def obter_dados_google(palavra_chave, pagina=1):
     params = {
         "engine": "google_scholar",
         "q": palavra_chave,
-        "api_key": "5468326dba3cae3868bc9c03594d2ac4c9d3ee3136c8f34d73704c1d1ac67d46",
+        "api_key": "b4c5a18f51d930ea231af077470aa2af1ce0aa31a6e23c94ebfa8f7132fdf193",
         "start": (pagina - 1) * 10
     }
 
