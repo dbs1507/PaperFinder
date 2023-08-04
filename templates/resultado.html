@@ -45,6 +45,17 @@
         .keyword{
             text-align: center;
         }
+        .clickable-title {
+            text-align: center;
+            display: block;
+            font-size: 2rem;
+            text-decoration: none;
+            color: black;
+            margin-top: 40px;
+            font-family: 'Syne', sans-serif;
+            padding-bottom: 5rem;
+            
+        }
 
         /* Estilos responsivos para dispositivos móveis */
         @media (max-width: 576px) {
@@ -81,7 +92,7 @@
 </head>
 <body>
     <header>
-        <h1 class="text-center pt-4 title-page">PAPERFINDER</h1>
+        <a href="{{ url_for('index') }}" class="clickable-title"><span>PAPERSFINDER</span></a>
         <div class="text-center mb-3">
             <span class="badge text-bg-dark">KEYWORD: {{dado}}</span>
         </div>
