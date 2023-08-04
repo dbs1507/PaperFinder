@@ -9,5 +9,7 @@ Gunicorn
 flask
 google-search-results
 pytrends
+python-dotenv
+os
 
 
