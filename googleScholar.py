@@ -1,5 +1,9 @@
 from serpapi import GoogleSearch
 import requests
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def obter_dados_google(palavra_chave, pagina=1):
@@ -7,7 +11,7 @@ def obter_dados_google(palavra_chave, pagina=1):
     params = {
         "engine": "google_scholar",
         "q": palavra_chave,
-        "api_key": "b4c5a18f51d930ea231af077470aa2af1ce0aa31a6e23c94ebfa8f7132fdf193",
+        "api_key": os.getenv("API_KEY"),
         "start": (pagina - 1) * 10
     }
 
