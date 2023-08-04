@@ -94,15 +94,23 @@
     <div class="mt-5 container">
         <h4 class="title text-center pt-5">Artigos relacionados</h4>
         {% for resultado in google_scholar %}
-            {% set sorted_results = resultado['organic_results'] | sort(attribute='inline_links.cited_by.total', reverse=True) %}
+            {% set sorted_results = resultado['organic_results'] | custom_filter %}
             {% for item in sorted_results %}
                 <div class="col-12">
                     <div class="card mt-2" style="width: 100%;">
                         <div class="card-body">
                             <h5 class="card-title">{{ item['title'] }}</h5>
                             <h6 class="card-subtitle mb-2 text-body-secondary">{{ item['publication_info']['summary'] }}</h6>
-                            <p class="card-text"><span class="mt-2 badge text-bg-dark">{{ item['inline_links']['cited_by']['total'] }} citações</span></p>
-                            <button class="btn btn-outline-secondary"><a target="_blank" href="{{ item['link'] }}" style="color: rgb(143, 143, 143); text-decoration: none;">Link artigo</a></button>
+                            <p class="card-text">
+                                {% if item['inline_links']['cited_by'] %}
+                                    <span class="mt-2 badge text-bg-dark">{{ item['inline_links']['cited_by']['total'] }} citações</span>
+                                {% else %}
+                                    <span class="mt-2 badge text-bg-dark">0 citações</span>
+                                {% endif %}
+                            </p>
+                            <button class="btn btn-outline-secondary">
+                                <a target="_blank" href="{{ item['link'] }}" style="color: rgb(143, 143, 143); text-decoration: none;">Link artigo</a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -115,11 +123,9 @@
                 {% endif %}
             {% endfor %}
         </div>
-        
     </div>
     
     
-
 
     <script>
         

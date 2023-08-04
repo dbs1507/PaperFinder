@@ -11,10 +11,6 @@ def obter_dados_google(palavra_chave, pagina=1):
         "start": (pagina - 1) * 10
     }
 
-    search = GoogleSearch(params)
-    results = search.get_dict()
-    organic_results = results["organic_results"]
-
     paginationResponses = []
 
     paginationResponse = requests.get(

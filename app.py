@@ -8,6 +8,24 @@ import requests
 app = Flask(__name__)
 
 
+def custom_filter(results):
+    # Filtrar resultados que possuem 'cited_by'
+    filtered_results = [
+        result for result in results if 'cited_by' in result['inline_links']]
+    # Ordenar os resultados filtrados pelo número de citações
+    sorted_results = sorted(
+        filtered_results, key=lambda x: x['inline_links']['cited_by']['total'], reverse=True)
+    # Adicionar resultados com 0 citações
+    for result in results:
+        if 'cited_by' not in result['inline_links']:
+            sorted_results.append(result)
+    return sorted_results
+
+
+# Registrar o filtro personalizado
+app.add_template_filter(custom_filter)
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
