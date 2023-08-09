@@ -96,14 +96,10 @@
             <span class="badge text-bg-dark">KEYWORD: {{dado}}</span>
         </div>
     </header>
-    <div class="container">
-        <h4 class="title text-center pt-5" >Interesse ao longo do tempo</h4>
-        <canvas class="mt-5" id="chartTrends"></canvas>
 
-    </div>
     <div class="mt-5 container">
         <h4 class="title text-center pt-5">Artigos relacionados</h4>
-        {% for resultado in google_scholar %}
+        {% for resultado in response_content %}
             {% set sorted_results = resultado['organic_results'] | custom_filter %}
             {% for item in sorted_results %}
                 <div class="col-12">
@@ -123,65 +119,13 @@
                             </button>
                             <button class="btn btn-outline-secondary">
                                 <a href="{{ url_for('citacoes', serpapi_scholar_link=item['inline_links']['cited_by']['serpapi_scholar_link']) }}" style="color: rgb(143, 143, 143); text-decoration: none;">Ver Citações</a>
-                            </button>
-                                                        
+                            </button>                                                       
                         </div>
                     </div>
                 </div>
             {% endfor %}
         {% endfor %}
-        <div class="pagination mt-5 mb-5 text-center">
-            {% for resultado in range(1, totalResults) %}
-                {% if resultado < 11 %}
-                    <a class="btn btn-dark mb-3" href="{{ url_for('buscar', dado=dado, page=resultado) }}">{{ resultado }}</a>
-                {% endif %}
-            {% endfor %}
-        </div>
     </div>
-    
-    
-
-    <script>
-        
-        //Trends
-        var interesseGeral = '{{ consultas_relacionadas | tojson}}';
-        interesseGeral = JSON.parse(interesseGeral);
-    
-        var consultasKeys = [];
-        var consultasValues = [];
-        interesseGeral.map(val => {
-            // Converter a data usando o Moment.js
-            var dataFormatada = moment(val[1]).format('DD/MM/YYYY');
-            consultasKeys.push(dataFormatada);
-            consultasValues.push(val[2]);
-        });
-    
-        const chartTrends = document.getElementById('chartTrends');
-    
-        // Criar um gráfico de linhas
-        new Chart(chartTrends, {
-            type: 'line',
-            data: {
-                labels: consultasKeys,
-                datasets: [{
-                    label: 'Interesse a todo tempo',
-                    data: consultasValues,
-                    backgroundColor: '#0d0d0d',
-                    borderColor: '#0d0d0d',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            },
-        });
-
-    </script>
     
     
 </body>
