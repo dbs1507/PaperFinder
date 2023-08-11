@@ -94,39 +94,38 @@
         <a href="{{ url_for('index') }}" class="clickable-title">PAPERSFINDER</a>
         <div class="text-center mb-3">
             <span class="badge text-bg-dark">KEYWORD: {{dado}}</span>
+            <span class="badge text-bg-dark">ARTICLE: {{artigo}}</span>
         </div>
     </header>
-
     <div class="mt-5 container">
-        <h4 class="title text-center pt-5">Artigos relacionados</h4>
-        {% for resultado in response_content %}
-            {% set sorted_results = resultado['organic_results'] | custom_filter %}
-            {% for item in sorted_results %}
-                <div class="col-12">
-                    <div class="card mt-2" style="width: 100%;">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item['title'] }}</h5>
-                            <h6 class="card-subtitle mb-2 text-body-secondary">{{ item['publication_info']['summary'] }}</h6>
-                            <p class="card-text">
-                                {% if item['inline_links']['cited_by'] %}
-                                    <span class="mt-2 badge text-bg-dark">{{ item['inline_links']['cited_by']['total'] }} citações</span>
-                                {% else %}
-                                    <span class="mt-2 badge text-bg-dark">0 citações</span>
-                                {% endif %}
-                            </p>
-                            <button class="btn btn-outline-secondary">
-                                <a target="_blank" href="{{ item['link'] }}" style="color: rgb(143, 143, 143); text-decoration: none;">Link artigo</a>
-                            </button>
-                            <button class="btn btn-outline-secondary">
-                                <a href="{{ url_for('citacoes', serpapi_scholar_link=item['inline_links']['cited_by']['serpapi_scholar_link']) }}" style="color: rgb(143, 143, 143); text-decoration: none;">Ver Citações</a>
-                            </button>                                                       
-                        </div>
-                    </div>
+        <h4 class="title text-center pt-5">Citações relacionadas</h4>
+        {% for resultado in citacoes['organic_results'] %}
+        <div class="col-12">
+            <div class="card mt-2" style="width: 100%;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ resultado['title'] }}</h5>
+                    <p class="card-text">
+                        {% if resultado['inline_links'] and resultado['inline_links']['cited_by'] %}
+                            <span class="mt-2 badge text-bg-dark">{{ resultado['inline_links']['cited_by']['total'] }} citações</span>
+                        {% else %}
+                            <span class="mt-2 badge text-bg-dark">0 citações</span>
+                        {% endif %}
+                    </p>
+                    <button class="btn btn-outline-secondary">
+                        <a target="_blank" href="{{ resultado['link'] }}" style="color: rgb(143, 143, 143); text-decoration: none;">Link artigo</a>
+                    </button>
+                    {% if resultado['inline_links'] and resultado['inline_links']['cited_by'] %}
+                        <button class="btn btn-outline-secondary">
+                            <a href="{{ url_for('citacoes', dado=dado, serpapi_scholar_link=resultado['inline_links']['cited_by']['cites_id']) }}" style="color: rgb(143, 143, 143); text-decoration: none;">Ver Citações</a>
+                        </button>
+                    {% endif %}           
                 </div>
-            {% endfor %}
+            </div>
+        </div>       
         {% endfor %}
-    </div>
-    
+    </div> 
+
+      
     
 </body>
 </html>

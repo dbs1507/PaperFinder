@@ -60,34 +60,54 @@ def buscar():
 @app.route('/citacoes', methods=['GET'])
 def citacoes():
     dado = request.args.get('dado')
+    artigo = request.args.get("artigo")
     page = request.args.get('page', 1)
+    id = request.args.get('serpapi_scholar_link')
 
-    serpapi_scholar_link = request.args.get(
-        'serpapi_scholar_link')  # Obtenha o link do parâmetro da URL
+    paginationResponses = googleScholar.citacoes(dado, page, artigo, id)
 
-    params = {
-        "engine": "google_scholar",
-        "q": dado,
-        "api_key": os.getenv("API_KEY"),
-        "start": (page - 1) * 10
-    }
+    return render_template('citacoes.html', citacoes=paginationResponses, dado=dado, artigo=artigo)
 
-    response = requests.get(serpapi_scholar_link, params=params).json()
+# def citacoes(pagina):
+#     dado = request.args.get('dado')
+#     page = request.args.get('page', 1)
+#     serpapi_scholar_link = request.args.get('serpapi_scholar_link')
 
-    link_cited_article = []
+#     params = {
+#         "engine": "google_scholar",
+#         "q": dado,
+#         "api_key": os.getenv("API_KEY"),
+#         "start": (page - 1) * 10
+#     }
 
-    organic_results = response['organic_results']
-    for cited in organic_results:
-        link_cited_article.append(cited['inline_links']
-                                  ['cited_by']['serpapi_scholar_link'])
+#     paginationResponses = []
 
-    cited_article = []
-    for citacoes in link_cited_article:
-        request_cited = requests.get(citacoes, params=params).json()
-        # print(request_cited)
-        cited_article.append(request_cited['organic_results'])
+#     paginationResponse = requests.get(
+#         f"https://serpapi.com/search.json?cites={serpapi_scholar_link}", params=params).json()
 
-    return render_template('citacoes.html', response_content=cited_article)
+#     paginationResponseData = {
+#         "organic_results": paginationResponse["organic_results"],
+#         "page": str(pagina)
+#     }
+#     paginationResponses.append(paginationResponseData)
+#     totalResults = paginationResponse["search_information"]["total_results"]
+
+#     return render_template('citacoes.html', response_content=paginationResponse)
+
+    # link_cited_article = []
+
+    # organic_results = response['organic_results']
+    # for cited in organic_results:
+    #     link_cited_article.append(cited['inline_links']
+    #                               ['cited_by']['serpapi_scholar_link'])
+
+    # cited_article = []
+    # for citacoes in link_cited_article:
+    #     request_cited = requests.get(citacoes, params=params).json()
+    #     # print(request_cited)
+    #     cited_article.append(request_cited['organic_results'])
+
+    # return render_template('citacoes.html', response_content=cited_article)
 
 
 if __name__ == '__main__':

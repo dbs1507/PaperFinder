@@ -112,7 +112,7 @@
                             <h5 class="card-title">{{ item['title'] }}</h5>
                             <h6 class="card-subtitle mb-2 text-body-secondary">{{ item['publication_info']['summary'] }}</h6>
                             <p class="card-text">
-                                {% if item['inline_links']['cited_by'] %}
+                                {% if item['inline_links'] and item['inline_links']['cited_by'] %}
                                     <span class="mt-2 badge text-bg-dark">{{ item['inline_links']['cited_by']['total'] }} citações</span>
                                 {% else %}
                                     <span class="mt-2 badge text-bg-dark">0 citações</span>
@@ -121,10 +121,11 @@
                             <button class="btn btn-outline-secondary">
                                 <a target="_blank" href="{{ item['link'] }}" style="color: rgb(143, 143, 143); text-decoration: none;">Link artigo</a>
                             </button>
-                            <button class="btn btn-outline-secondary">
-                                <a href="{{ url_for('citacoes', serpapi_scholar_link=item['inline_links']['cited_by']['serpapi_scholar_link']) }}" style="color: rgb(143, 143, 143); text-decoration: none;">Ver Citações</a>
-                            </button>
-                                                        
+                            {% if item['inline_links'] and item['inline_links']['cited_by'] %}
+                                <button class="btn btn-outline-secondary">
+                                    <a href="{{ url_for('citacoes', dado=dado, artigo=item['title'], serpapi_scholar_link=item['inline_links']['cited_by']['cites_id']) }}" style="color: rgb(143, 143, 143); text-decoration: none;">Ver Citações</a>
+                                </button>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
