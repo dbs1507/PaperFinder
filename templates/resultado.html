@@ -118,13 +118,23 @@
                                     <span class="mt-2 badge text-bg-dark">0 citações</span>
                                 {% endif %}
                             </p>
-                            <button class="btn btn-outline-secondary">
-                                <a target="_blank" href="{{ item['link'] }}" style="color: rgb(143, 143, 143); text-decoration: none;">Link artigo</a>
-                            </button>
+                            {% if item['link'] %}
+                                <button class="btn btn-outline-secondary">
+                                    <a target="_blank" href="{{ item['link'] }}" style="color: rgb(143, 143, 143); text-decoration: none;">Link artigo</a>
+                                </button>
+                            {% else %}
+                                <button class="btn btn-outline-secondary" disabled>
+                                    <a target="_blank" href="{{ item['link'] }}" style="color: rgb(143, 143, 143); text-decoration: none;">Não possui link</a>
+                                </button>                            
+                            {% endif %}
                             {% if item['inline_links'] and item['inline_links']['cited_by'] %}
                                 <button class="btn btn-outline-secondary">
                                     <a href="{{ url_for('citacoes', dado=dado, artigo=item['title'], serpapi_scholar_link=item['inline_links']['cited_by']['cites_id']) }}" style="color: rgb(143, 143, 143); text-decoration: none;">Ver Citações</a>
                                 </button>
+                            {% else %}
+                                <button class="btn btn-outline-secondary" disabled>
+                                    <a target="_blank" href="{{ item['link'] }}" style="color: rgb(143, 143, 143); text-decoration: none;">Não possui artigo citado</a>
+                                </button> 
                             {% endif %}
                         </div>
                     </div>

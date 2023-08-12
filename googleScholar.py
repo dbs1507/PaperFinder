@@ -53,8 +53,6 @@ def citacoes(palavra_chave, page, artigo, id):
     paginationResponses = requests.get(
         f"https://serpapi.com/search.json?cites={id}", params=params).json()
 
-    print(paginationResponses["organic_results"])
-
     # paginationResponseData = {
     #     "organic_results": paginationResponse["organic_results"],
     #     "page": str(pagina)

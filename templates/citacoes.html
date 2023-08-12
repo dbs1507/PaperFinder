@@ -99,30 +99,36 @@
     </header>
     <div class="mt-5 container">
         <h4 class="title text-center pt-5">Citações relacionadas</h4>
-        {% for resultado in citacoes['organic_results'] %}
-        <div class="col-12">
-            <div class="card mt-2" style="width: 100%;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ resultado['title'] }}</h5>
-                    <p class="card-text">
-                        {% if resultado['inline_links'] and resultado['inline_links']['cited_by'] %}
-                            <span class="mt-2 badge text-bg-dark">{{ resultado['inline_links']['cited_by']['total'] }} citações</span>
-                        {% else %}
-                            <span class="mt-2 badge text-bg-dark">0 citações</span>
-                        {% endif %}
-                    </p>
-                    <button class="btn btn-outline-secondary">
-                        <a target="_blank" href="{{ resultado['link'] }}" style="color: rgb(143, 143, 143); text-decoration: none;">Link artigo</a>
-                    </button>
-                    {% if resultado['inline_links'] and resultado['inline_links']['cited_by'] %}
-                        <button class="btn btn-outline-secondary">
-                            <a href="{{ url_for('citacoes', dado=dado, serpapi_scholar_link=resultado['inline_links']['cited_by']['cites_id']) }}" style="color: rgb(143, 143, 143); text-decoration: none;">Ver Citações</a>
-                        </button>
-                    {% endif %}           
-                </div>
-            </div>
-        </div>       
-        {% endfor %}
+        {% if citacoes%}
+            {% for resultado in citacoes %}
+                <div class="col-12">
+                    <div class="card mt-2" style="width: 100%;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ resultado['title'] }}</h5>
+                            <p class="card-text">
+                                {% if resultado['inline_links'] and resultado['inline_links']['cited_by'] %}
+                                    <span class="mt-2 badge text-bg-dark">{{ resultado['inline_links']['cited_by']['total'] }} citações</span>
+                                {% else %}
+                                    <span class="mt-2 badge text-bg-dark">0 citações</span>
+                                {% endif %}
+                            </p>
+                            <button class="btn btn-outline-secondary">
+                                <a target="_blank" href="{{ resultado['link'] }}" style="color: rgb(143, 143, 143); text-decoration: none;">Link artigo</a>
+                            </button>
+                            {% if resultado['inline_links'] and resultado['inline_links']['cited_by'] %}
+                                <button class="btn btn-outline-secondary">
+                                    <a href="{{ url_for('citacoes', dado=dado, serpapi_scholar_link=resultado['inline_links']['cited_by']['cites_id']) }}" style="color: rgb(143, 143, 143); text-decoration: none;">Ver Citações</a>
+                                </button>
+                            {% endif %}           
+                        </div>
+                    </div>
+                </div>       
+            {% endfor %}
+        {% else %}
+        <div class="text-center mt-3">
+            <span class="badge bg-danger text-white">Não foi possível encontrar as informações</span>
+        </div>
+        {% endif %}
     </div> 
 
       

@@ -66,7 +66,13 @@ def citacoes():
 
     paginationResponses = googleScholar.citacoes(dado, page, artigo, id)
 
-    return render_template('citacoes.html', citacoes=paginationResponses, dado=dado, artigo=artigo)
+    if 'organic_results' not in paginationResponses:
+        alerta = 'Não foi possível encontrar as informações'
+        return render_template('citacoes.html', alerta=alerta)
+    else:
+        return render_template('citacoes.html', citacoes=paginationResponses['organic_results'], dado=dado, artigo=artigo)
+
+    # return render_template('citacoes.html', citacoes=paginationResponses, dado=dado, artigo=artigo)
 
 # def citacoes(pagina):
 #     dado = request.args.get('dado')
