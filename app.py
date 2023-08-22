@@ -3,7 +3,6 @@ from pytrends.request import TrendReq
 
 import trendsInterface
 import googleScholar
-import firebase.login as auth
 
 import json
 import requests
