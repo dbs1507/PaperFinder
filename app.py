@@ -1,10 +1,14 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from pytrends.request import TrendReq
+
 import trendsInterface
 import googleScholar
+import firebase.login as auth
+
 import json
 import requests
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -74,6 +78,19 @@ def citacoes():
 
     # return render_template('citacoes.html', citacoes=paginationResponses, dado=dado, artigo=artigo)
 
+
+@app.route('/login', methods=['POST'])
+def login():
+    email = request.form.get('email')
+    senha = request.form.get('senha')
+
+    user_id = auth.login(email, senha)
+    if user_id:
+        return jsonify({'success': True})
+    else:
+        return jsonify({'success': False, 'message': 'Erro ao fazer login'})
+
+
 # def citacoes(pagina):
 #     dado = request.args.get('dado')
 #     page = request.args.get('page', 1)
@@ -114,7 +131,6 @@ def citacoes():
     #     cited_article.append(request_cited['organic_results'])
 
     # return render_template('citacoes.html', response_content=cited_article)
-
 
 if __name__ == '__main__':
     app.run(debug=True)

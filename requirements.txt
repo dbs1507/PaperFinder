@@ -10,4 +10,5 @@ flask
 google-search-results
 pytrends
 python-dotenv
+firebase_admin
 
