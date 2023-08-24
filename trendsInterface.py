@@ -19,9 +19,15 @@ def obter_dados_completos(palavra_chave):
 
     search = GoogleSearch(params)
     results = search.get_dict()
-    interest_over_time = results["interest_over_time"]
+    interest_over_time = results.get("interest_over_time")
 
-    dados_outra_api = interest_over_time['timeline_data']
+    if interest_over_time is None:
+        return None  # Retorna None se interest_over_time estiver vazio
+
+    dados_outra_api = interest_over_time.get('timeline_data')
+
+    if dados_outra_api is None:
+        return None  # Retorna None se dados_outra_api estiver vazio
 
     # Criar listas para armazenar os dados 'date' e 'value'
     dates = []

@@ -52,11 +52,13 @@ def buscar():
     totalResults, paginationResponses = googleScholar.obter_dados_google(
         dado, page)
 
-    # consultas_relacionadas.drop("isPartial", axis=1, inplace=True or False)
+    if consultas_relacionadas is None:
+        alerta = "Não há dados de pesquisa suficientes para exibir o gráfico de interesse"
+        consultas_relacionadas = "undefined"  # Defina como "undefined" se for None
+        return render_template('resultado.html', consultas_relacionadas=consultas_relacionadas, google_scholar=paginationResponses, dado=dado, totalResults=totalResults, alerta=alerta)
+
     consultas_relacionadas = consultas_relacionadas.reset_index()
     consultas_relacionadas = consultas_relacionadas.values.tolist()
-    print(totalResults)
-
     return render_template('resultado.html', consultas_relacionadas=list(consultas_relacionadas), google_scholar=paginationResponses, dado=dado, totalResults=totalResults)
 
 

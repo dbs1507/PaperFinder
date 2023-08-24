@@ -96,11 +96,19 @@
             <span class="badge text-bg-dark">KEYWORD: {{dado}}</span>
         </div>
     </header>
+
     <div class="container">
-        <h4 class="title text-center pt-5" >Interesse ao longo do tempo</h4>
+        <h4 class="title text-center pt-5">Interesse ao longo do tempo</h4>
+        {% if alerta %}
+            <div class="text-center">
+                <span class="badge text-bg-danger">{{alerta}}</span>
+            </div>
+        {% else %}
         <canvas class="mt-5" id="chartTrends"></canvas>
+        {% endif %}
 
     </div>
+    
     <div class="mt-5 container">
         <h4 class="title text-center pt-5">Artigos relacionados</h4>
         {% for resultado in google_scholar %}
@@ -153,46 +161,52 @@
     
 
     <script>
-        
-        //Trends
+        // Trends
         var interesseGeral = '{{ consultas_relacionadas | tojson}}';
-        interesseGeral = JSON.parse(interesseGeral);
     
-        var consultasKeys = [];
-        var consultasValues = [];
-        interesseGeral.map(val => {
-            // Converter a data usando o Moment.js
-            var dataFormatada = moment(val[1]).format('DD/MM/YYYY');
-            consultasKeys.push(dataFormatada);
-            consultasValues.push(val[2]);
-        });
+        if (interesseGeral && interesseGeral !== "undefined") {
+            interesseGeral = JSON.parse(interesseGeral);
     
-        const chartTrends = document.getElementById('chartTrends');
+            var consultasKeys = [];
+            var consultasValues = [];
     
-        // Criar um gráfico de linhas
-        new Chart(chartTrends, {
-            type: 'line',
-            data: {
-                labels: consultasKeys,
-                datasets: [{
-                    label: 'Interesse a todo tempo',
-                    data: consultasValues,
-                    backgroundColor: '#0d0d0d',
-                    borderColor: '#0d0d0d',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+            interesseGeral.map(val => {
+                // Converter a data usando o Moment.js
+                var dataFormatada = moment(val[1]).format('DD/MM/YYYY');
+                consultasKeys.push(dataFormatada);
+                consultasValues.push(val[2]);
+            });
+    
+            const chartTrends = document.getElementById('chartTrends');
+    
+            // Criar um gráfico de linhas
+            new Chart(chartTrends, {
+                type: 'line',
+                data: {
+                    labels: consultasKeys,
+                    datasets: [{
+                        label: 'Interesse a todo tempo',
+                        data: consultasValues,
+                        backgroundColor: '#0d0d0d',
+                        borderColor: '#0d0d0d',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
-                }
-            },
-        });
-
+                },
+            });
+        } else {
+            // Se consultas_relacionadas for "undefined", mostrar um alerta
+            alert("Não há dados disponíveis para exibir o gráfico.");
+        }
     </script>
+    
     
     
 </body>
