@@ -89,6 +89,26 @@
                 margin-top: 10px; /* Adicione um espaçamento entre o campo de entrada e o botão */
             }
         }
+
+        .loading-background {
+            background-color: rgba(229, 229, 229, 0.5); /* Cor de fundo semi-transparente */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999; /* Z-index alto para ficar acima de todos os outros elementos */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Estilo para o spinner */
+        .loading-spinner {
+            width: 3rem;
+            height: 3rem;
+            color: #343a40; /* Cor de texto escura */
+        }
         
     </style>
 </head>
@@ -102,19 +122,27 @@
         <div class="container text-center mt-4">
             <h1 class="title">PAPERSFINDER</h1>
         </div>
-        <form action="/buscar" method="GET">
+        <form action="/buscar" method="GET" onsubmit="showLoader()">
             <div class="input-group">
                 <input name="dado" id="dado" type="text" class="form-control border border-2" placeholder="Digite uma palavra ..." aria-describedby="inputGroup-sizing-lg">
             </div>
             <button type="submit" class="mt-3 button-key btn btn-outline-secondary border border-2" type="button" id="button-addon2">Buscar</button>
         </form>
+        
         <button type="button" class="btn btn-secondary-link btn-sm color-secondary" data-toggle="tooltip" data-placement="top" title="Digite uma palavra-chave relacionada ao tema de interesse, clique em 'Buscar' e obtenha estatísticas com base no Google Trends, além de sugestões de artigos vindas diretamente do Google Scholar para aprofundar seus conhecimentos sobre o assunto pesquisado.">
             <p class="how-woks">Como funciona?</p>
         </button>
     </div>
 
+    <div class="loading-background" id="loader" style="display: none;">
+        <div class="spinner-border loading-spinner" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script>
         // Inicializa os tooltips
         document.addEventListener("DOMContentLoaded", function () {
@@ -123,14 +151,11 @@
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
         });
-    </script>
-</body>
-</html>
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-<script>
-        // Inicializa os tooltips
+        $(function () {
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+
         $(function () {
             $('[data-bs-toggle="tooltip"]').tooltip();
         });
@@ -141,4 +166,23 @@
                 alertElement.style.display = 'none';
             }
         };
-</script>
+
+        function showLoader() {
+            document.getElementById("loader").style.display = "flex";
+        }
+
+        // Ocultar o loader quando a página estiver completamente carregada
+        window.addEventListener('load', function () {
+            document.getElementById("loader").style.display = "none";
+        });
+
+        // Lidar com o evento pageshow
+        window.addEventListener('pageshow', function(event) {
+            // Verificar se o evento é disparado devido ao botão "Voltar" do navegador
+            if (event.persisted) {
+                // Ocultar o spinner quando a página for mostrada novamente
+                document.getElementById("loader").style.display = "none";
+            }
+        });
+    </script>
+</body>
