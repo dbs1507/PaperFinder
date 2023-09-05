@@ -104,12 +104,18 @@
                 <span class="badge text-bg-danger">{{alerta}}</span>
             </div>
         {% else %}
+        <div class="text-center" id="chartLoader" style="background-color: rgb(228, 228, 228); border-radius: 10px; padding: 200px;">
+            <h4>Carregando gráfico...</h4>
+            <div class="spinner-border text-dark" role="status">
+                <span class="sr-only"></span>
+            </div>
+        </div>
         <canvas class="mt-5" id="chartTrends"></canvas>
         {% endif %}
 
     </div>
     
-    <div class="mt-5 container">
+    <div class="container">
         <h4 class="title text-center pt-5">Artigos relacionados</h4>
         {% for resultado in google_scholar %}
             {% set sorted_results = resultado['organic_results'] | custom_filter %}
@@ -177,10 +183,11 @@
                 consultasValues.push(val[2]);
             });
     
-            const chartTrends = document.getElementById('chartTrends');
-    
+            const chartContainer = document.getElementById('chartTrends');
+            const chartLoader = document.getElementById('chartLoader');
+
             // Criar um gráfico de linhas
-            new Chart(chartTrends, {
+            var chart = new Chart(chartContainer, {
                 type: 'line',
                 data: {
                     labels: consultasKeys,
@@ -201,6 +208,10 @@
                     }
                 },
             });
+
+            // Quando o gráfico terminar de renderizar, ocultar o spinner e mostrar o gráfico
+            chartContainer.style.display = "block";
+            chartLoader.style.display = "none";
         } else {
             // Se consultas_relacionadas for "undefined", mostrar um alerta
             alert("Não há dados disponíveis para exibir o gráfico.");
